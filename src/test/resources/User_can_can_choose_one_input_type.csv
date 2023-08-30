@@ -1,3 +1,3 @@
-Price incl. VAT, NetPrice, VATsum
-Value-Added Tax, NetPrice, Price
-Price without VAT, VATsum, Price
+Price incl. VAT, Price, NetPrice, VATsum
+Value-Added Tax, VATsum, NetPrice, Price
+Price without VAT, NetPrice, VATsum, Price
