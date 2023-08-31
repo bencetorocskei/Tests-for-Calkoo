@@ -7,6 +7,7 @@ import pagefactory.CalculatorPage;
 import util.RandomNumberGenerator;
 
 import java.sql.SQLOutput;
+import java.util.List;
 
 public class TestsForVatRates {
 
@@ -18,13 +19,17 @@ public class TestsForVatRates {
         calculator.openCalculatorPage();
     }
 
-//három országgal megjelennek e a százalékok
+//három országgal megjelennek e a százalékok, mit nézzek itt??? hogyy clickkelhető, hogy egyezik az adat?
 
     @ParameterizedTest
     @CsvFileSource(resources = "UserIsAbleToChooseAValidVATRateForTheSelectedCountry.csv")
     public void UserIsAbleToChooseAValidVATRateForTheSelectedCountry(String countryName, String vatRates) {
             calculator.selectCountry(countryName);
-        System.out.println(vatRates);
+        List<String> rates = List.of(vatRates.split(" "));
+        for (String rate : rates) {
+            calculator.SelectTaxRate(rate);
+        }
+        System.out.println(rates);
             //Assertions.assertTrue(calculator.vatRatesAreClickable());
         }
 

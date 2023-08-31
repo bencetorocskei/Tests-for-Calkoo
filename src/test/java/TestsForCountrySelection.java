@@ -16,15 +16,10 @@ public class TestsForCountrySelection {
         calculator.openCalculatorPage();
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvFileSource (resources = "UserCanSelectACountryWhichAppliesVATScheme.csv")
     public void UserCanSelectACountryWhichAppliesVATScheme (String countryName) {
             calculator.selectCountry(countryName);
             Assertions.assertTrue(calculator.vatRatesAreAvailable());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource (resources = "UserCanSelectACountryWhichAppliesVATScheme.csv")
-    public void UserCanSelectACountryWhichAppliesVATSchemeParameterized (String countryName) {
-        UserCanSelectACountryWhichAppliesVATScheme(countryName);
     }
 }

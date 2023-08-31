@@ -12,11 +12,16 @@ public class BasePage {
     WebDriver driver;
     WebDriverWait wait;
     Actions action;
+    String browserType = System.getProperty("browserType");
 
     public BasePage() {
-        this.driver = DriverManager.createDriver();
+        if (browserType == null) {
+            browserType = "chrome";
+        }
+
+        this.driver = DriverManager.createDriver(browserType);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        this.action =  new Actions(driver);
+        this.action = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 
