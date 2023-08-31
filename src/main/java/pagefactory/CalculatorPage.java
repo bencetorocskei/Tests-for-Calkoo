@@ -39,8 +39,9 @@ public class CalculatorPage extends BasePage {
 
     public void openCalculatorPage() {
         driver.get("https://www.calkoo.com/en/vat-calculator");
-        try {doNotConsentBtn.click();}
-        catch(NoSuchElementException e){
+        try {
+            doNotConsentBtn.click();
+        } catch (NoSuchElementException e) {
             System.out.println("Dialog is closed");
         }
     }
@@ -138,21 +139,14 @@ public class CalculatorPage extends BasePage {
                 rateItem.click();
                 return true;
             }
-        }return false;
+        }
+        return false;
     }
 
     public void selectValueRadioBtn(String valueRadioBtnName) {
-        try {
             WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
             wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
             valueRadioBtn.click();
-
-        } catch (ElementClickInterceptedException e) {
-            doNotConsentBtn.click();
-            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
-            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
-            valueRadioBtn.click();
-        }
     }
 
     public void selectValueInput(String valueInputName) {
@@ -162,60 +156,11 @@ public class CalculatorPage extends BasePage {
     }
 
     public void setVatValueInput(String valueRadioBtnName, String valueInputName, String value) {
-
-        try {
-            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
-            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
-            valueRadioBtn.click();
-            WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
-            valueInput.sendKeys(value);
-
-        } catch (ElementClickInterceptedException e) {
-            doNotConsentBtn.click();
-            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
-            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
-            valueRadioBtn.click();
-            WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
-            valueInput.sendKeys(value);
-        }
-    }
-
-    public String getValueInput(String valueInputName) {
+        WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
+        wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
+        valueRadioBtn.click();
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
-        wait.until(ExpectedConditions.elementToBeClickable(valueInput));
-        return valueInput.getAttribute("value");
-    }
-
-    public void clickOnTheNetPriceBtn() {
-        netPriceBtn.click();
-    }
-
-    public void clickOnTheVatValueBtn() {
-        vatValueBtn.click();
-    }
-
-    public void clickOnTheVatInclPriceBtn() {
-        vatInclPriceBtn.click();
-    }
-
-    public void clickOnTheNetPriceInput() {
-        netPriceInput.click();
-    }
-
-    public void clickOnTheVATValueInput() {
-        vatValueInput.click();
-    }
-
-    public void clickOnTheVATInclPriceInput() {
-        vatInclPriceInput.click();
-    }
-
-    public boolean netPriceInputIsDisabled() {
-        return netPriceInput.getAttribute("class").contains("disabled");
-    }
-
-    public boolean vatValueInputIsDisabled() {
-        return vatValueInput.getAttribute("class").contains("disabled");
+        valueInput.sendKeys(value);
     }
 
     public boolean valueInputIsDisabled(String valueInputName) {
