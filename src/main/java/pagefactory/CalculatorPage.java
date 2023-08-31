@@ -144,9 +144,17 @@ public class CalculatorPage extends BasePage {
     }
 
     public void selectValueRadioBtn(String valueRadioBtnName) {
+        try {
             WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
             wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
             valueRadioBtn.click();
+
+        } catch (ElementClickInterceptedException e) {
+            doNotConsentBtn.click();
+            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
+            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
+            valueRadioBtn.click();
+        }
     }
 
     public void selectValueInput(String valueInputName) {
@@ -162,6 +170,13 @@ public class CalculatorPage extends BasePage {
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
         valueInput.sendKeys(value);
     }
+
+    public String getValueInput(String valueInputName) {
+        WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
+        wait.until(ExpectedConditions.elementToBeClickable(valueInput));
+        return valueInput.getAttribute("value");
+    }
+
 
     public boolean valueInputIsDisabled(String valueInputName) {
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
