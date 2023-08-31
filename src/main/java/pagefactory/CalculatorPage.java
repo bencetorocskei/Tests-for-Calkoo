@@ -2,6 +2,7 @@ package pagefactory;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -30,9 +31,6 @@ public class CalculatorPage extends BasePage {
     @FindBy(xpath = "//label[normalize-space()='Price without VAT']")
     WebElement netPriceBtn;
 
-    @FindBy(css = "input[value='Reset']")
-    WebElement resetBtn;
-
     @FindBy(xpath = "//div[@class = 'fc-dialog-container']")
     WebElement dialog;
     @FindBy(xpath = "//div[@class = 'fc-dialog-container']//p[@class = 'fc-button-label']")
@@ -41,46 +39,20 @@ public class CalculatorPage extends BasePage {
 
     public void openCalculatorPage() {
         driver.get("https://www.calkoo.com/en/vat-calculator");
+        try {doNotConsentBtn.click();}
+        catch(NoSuchElementException e){
+            System.out.println("Dialog is closed");
+        }
     }
 
     public void selectCountry(String countryName) {
         wait.until(ExpectedConditions.elementToBeClickable(countryDrp));
         Select country = new Select(countryDrp);
         country.selectByVisibleText(countryName);
-        /*List<WebElement> allCountry = country.getOptions();
-        for (WebElement c : allCountry) {
-            System.out.println(c.getText());
-        }*/
     }
-    
-    /*public List<String> getCountryNames () {
-        Select country = new Select(countryDrp);
-        List<WebElement> allCountry = country.getOptions();
-        List <String> names = new ArrayList<>();
-        for (WebElement c : allCountry) {
-            //System.out.println(c.getText());
-            names.add(c.getText());
-        }
-        return names;
-    }
-
-    public void getRatesForNames() {
-        Select country = new Select(countryDrp);
-        List <String> names = getCountryNames();
-        for(String name : names) {
-            country.selectByVisibleText(name);
-            for (WebElement rateItem : rateItems) {
-                System.out.print(rateItem.getText());
-            }
-            System.out.println();
-        }
-    }*/
 
     public boolean vatRatesAreAvailable() {
         wait.until(ExpectedConditions.elementToBeClickable(rateItems.get(0)));
-        /*for (WebElement item : rateItems) {
-            System.out.println(item.getText());
-        }*/
         return rateItems.size() != 0;
     }
 
@@ -127,6 +99,7 @@ public class CalculatorPage extends BasePage {
 
         List<String> idForRadioBtn = new ArrayList<>();
         rateItems.forEach(rateItem -> idForRadioBtn.add(rateItem.getAttribute("for")));
+        System.out.println("idforradioBtn list " + idForRadioBtn);
         try {
             if (oneRateOptionIsSelected(idForRadioBtn)) return false;
         } catch (ElementClickInterceptedException e) {
@@ -138,11 +111,14 @@ public class CalculatorPage extends BasePage {
 
     private boolean oneRateOptionIsSelected(List<String> idForRadioBtn) {
         for (int i = 0; i < rateItems.size(); i++) {
-            //System.out.println(item.isEnabled());
+            System.out.println(rateItems.get(i).isEnabled());
+            System.out.println("rateItem " + rateItems.get(i).getText());
             rateItems.get(i).click();
             String idNotToCheck = rateItems.get(i).getAttribute("for");
+            System.out.println("clicked id " + idNotToCheck);
             List<String> idsToCheck = idForRadioBtn.stream().filter(s -> !s.equals(idNotToCheck)).toList();
             for (String id : idsToCheck) {
+                System.out.println("ids to check " + id);
                 if (driver.findElement(By.cssSelector("#" + id)).isSelected()) {
                     return true;
                 }
@@ -151,32 +127,18 @@ public class CalculatorPage extends BasePage {
         return false;
     }
 
-    /*public void tryToSelectVatRate() {
-        WebElement rate20 = driver.findElement(By.xpath("(//input[@id='VAT_20'])[1]"));
-        //WebElement rate5 = driver.findElement(By.xpath("(//input[@id='VAT_5'])[1]"));
-        WebElement rate5 = driver.findElement(By.cssSelector("#VAT_5"));
-
-        System.out.println(rate20.isEnabled());
-        System.out.println(rate20.isSelected());
-        System.out.println(rate5.isSelected());
-
-        rate5.click();
-        System.out.println(rate20.isSelected());
-    }*/
-
-    public void SelectTaxRate(String rate) {
+    public boolean selectValidVATRate(String rate) {
         if (rateItems.size() == 0) {
             throw new IllegalArgumentException("there are no rates to select");
         }
-
+        //System.out.println("rate input: "+rate + " " + rate.length());
         for (WebElement rateItem : rateItems) {
+            //System.out.print("rate: " + rateItem.getText().strip() + " " + rateItem.getText().strip().length());
             if (rateItem.getText().strip().equals(rate)) {
                 rateItem.click();
+                return true;
             }
-            //System.out.println(rate);
-            //System.out.print(rateItem.getText());
-        }
-        //System.out.println(rateItems.size());
+        }return false;
     }
 
     public void selectValueRadioBtn(String valueRadioBtnName) {
@@ -196,10 +158,10 @@ public class CalculatorPage extends BasePage {
     public void selectValueInput(String valueInputName) {
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
         wait.until(ExpectedConditions.elementToBeClickable(valueInput));
-        //action.moveToElement(valueInput).click().build().perform();
         valueInput.click();
     }
-    public void setVatValueInput(String valueRadioBtnName ,String valueInputName ,String value) {
+
+    public void setVatValueInput(String valueRadioBtnName, String valueInputName, String value) {
 
         try {
             WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
@@ -218,11 +180,12 @@ public class CalculatorPage extends BasePage {
         }
     }
 
-    public String getValueInput (String valueInputName) {
+    public String getValueInput(String valueInputName) {
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
         wait.until(ExpectedConditions.elementToBeClickable(valueInput));
         return valueInput.getAttribute("value");
     }
+
     public void clickOnTheNetPriceBtn() {
         netPriceBtn.click();
     }

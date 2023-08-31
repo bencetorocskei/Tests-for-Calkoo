@@ -1,8 +1,10 @@
 import com.opencsv.exceptions.CsvException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import util.ReadFromFile;
 import pagefactory.CalculatorPage;
 
@@ -31,13 +33,14 @@ public class TestsForValueInputs {
 
     @ParameterizedTest
     @CsvFileSource (resources = "UserCanEnterAmountsWithMax2DecimalDigitsPrecision.csv")
-    public void userCanEnterAmountsWithMax2DecimalDigitsPrecision(String valueTypeName, String inputName) throws IOException, CsvException {
-        String value = "19898.1999";
-        ReadFromFile.readFromCsv();
+    public void userCanEnterAmountsWithMax2DecimalDigitsPrecision(String valueTypeName, String inputName, String value, String expected) {
         calculator.setVatValueInput(valueTypeName, inputName, value);
         String actual = calculator.getValueInput(inputName);
-        String expected = value.substring(0, (value.indexOf(".")+3)); //ToDo rewrite it so it handles "," as well, solve the value problem
-        //String regex = "^[0-9]*\\.[0-9][0-9]$";
         Assertions.assertEquals(expected, actual);
     }
+    @AfterEach
+    public void tearDown() {
+        calculator.shutDown();
+    }
+
 }

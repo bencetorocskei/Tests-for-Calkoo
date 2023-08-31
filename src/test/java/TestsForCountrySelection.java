@@ -1,10 +1,11 @@
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import pagefactory.CalculatorPage;
-import util.RandomNumberGenerator;
+
 
 public class TestsForCountrySelection {
 
@@ -21,5 +22,10 @@ public class TestsForCountrySelection {
     public void UserCanSelectACountryWhichAppliesVATScheme (String countryName) {
             calculator.selectCountry(countryName);
             Assertions.assertTrue(calculator.vatRatesAreAvailable());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        calculator.shutDown();
     }
 }
