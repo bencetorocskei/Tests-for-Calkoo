@@ -75,12 +75,9 @@ public class CalculatorPage extends BasePage {
     private boolean vatRatesAreEnable() {
         wait.until(ExpectedConditions.elementToBeClickable(rateItems.get(0)));
         for (WebElement item : rateItems) {
-            //System.out.println(item.isEnabled());
             item.click();
             String idForRadioBtn = item.getAttribute("for");
             WebElement relatedRadioBtn = driver.findElement(By.cssSelector("#" + idForRadioBtn));
-            //System.out.println(relatedRadioBtn.isSelected());
-            //System.out.println(item.isEnabled());
             if (!relatedRadioBtn.isSelected()) {
                 return true;
             }
@@ -132,9 +129,7 @@ public class CalculatorPage extends BasePage {
         if (rateItems.size() == 0) {
             throw new IllegalArgumentException("there are no rates to select");
         }
-        //System.out.println("rate input: "+rate + " " + rate.length());
         for (WebElement rateItem : rateItems) {
-            //System.out.print("rate: " + rateItem.getText().strip() + " " + rateItem.getText().strip().length());
             if (rateItem.getText().strip().equals(rate)) {
                 rateItem.click();
                 return true;
@@ -144,17 +139,9 @@ public class CalculatorPage extends BasePage {
     }
 
     public void selectValueRadioBtn(String valueRadioBtnName) {
-        try {
-            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
-            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
-            valueRadioBtn.click();
-
-        } catch (ElementClickInterceptedException e) {
-            doNotConsentBtn.click();
-            WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
-            wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
-            valueRadioBtn.click();
-        }
+        WebElement valueRadioBtn = driver.findElement(By.xpath("//label[normalize-space()='" + valueRadioBtnName + "']"));
+        wait.until(ExpectedConditions.elementToBeClickable(valueRadioBtn));
+        valueRadioBtn.click();
     }
 
     public void selectValueInput(String valueInputName) {

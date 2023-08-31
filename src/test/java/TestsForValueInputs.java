@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import pagefactory.CalculatorPage;
 
-import java.io.IOException;
 
 
 public class TestsForValueInputs {
