@@ -1,12 +1,9 @@
-import com.opencsv.exceptions.CsvException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import util.ReadFromFile;
 import pagefactory.CalculatorPage;
 
 import java.io.IOException;
