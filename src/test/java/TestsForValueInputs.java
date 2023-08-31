@@ -2,6 +2,7 @@ import com.opencsv.exceptions.CsvException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -33,11 +34,26 @@ public class TestsForValueInputs {
 
     @ParameterizedTest
     @CsvFileSource (resources = "UserCanEnterAmountsWithMax2DecimalDigitsPrecision.csv")
-    public void userCanEnterAmountsWithMax2DecimalDigitsPrecision(String valueTypeName, String inputName, String value, String expected) {
+    public void userCanEnterAmountsWithMax2DecimalDigitsPrecision(String valueTypeName, String inputName,
+                                                                  String value, String expected) {
         calculator.setVatValueInput(valueTypeName, inputName, value);
         String actual = calculator.getValueInput(inputName);
         Assertions.assertEquals(expected, actual);
     }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "theUserGivesAValueTheCalculatorWillCalculateAndShowTheOther2Amounts.csv")
+    public void theUserGivesAValueTheCalculatorWillCalculateAndShowTheOther2Amounts(String valueTypeName, String inputName,
+                                                                                    String inputName2, String inputName3,
+                                                                                    String value, String expected1,
+                                                                                    String expected2) {
+        calculator.setVatValueInput(valueTypeName, inputName, value);
+        String actualInputValue2 = calculator.getValueInput(inputName2);
+        String actualInputValue3 = calculator.getValueInput(inputName3);
+        Assertions.assertTrue(expected1.equals(actualInputValue2) && (expected2.equals(actualInputValue3)));
+
+    }
+
     @AfterEach
     public void tearDown() {
         calculator.shutDown();

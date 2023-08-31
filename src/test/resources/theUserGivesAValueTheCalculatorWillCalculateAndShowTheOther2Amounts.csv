@@ -1,0 +1,3 @@
+Price incl. VAT, Price, NetPrice, VATsum, 120.00, 100.00, 20.00
+Value-Added Tax, VATsum, NetPrice, Price, 20.00, 100.00, 120.00
+Price without VAT, NetPrice, VATsum, Price, 100.00, 20.00, 120.00
