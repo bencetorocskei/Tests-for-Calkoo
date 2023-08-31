@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import pagefactory.CalculatorPage;
 import util.RandomNumberGenerator;
 
@@ -16,11 +14,9 @@ public class TestsForVatRates {
         calculator.openCalculatorPage();
     }
 
-
+//három országgal megjelennek e a százalékok
     @Test
     public void User_is_able_to_choose_a_valid_VAT_rate_for_the_selected_country() {
-        //calculator.tryToSelectVatRate();
-        //calculator.vatRatesAreClickable();
         for (int i = 0; i < 3; i++) {
             String countryValue = String.valueOf(RandomNumberGenerator.getRandomNumber(1, 170));
             calculator.selectCountry(countryValue);

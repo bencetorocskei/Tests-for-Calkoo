@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import pagefactory.CalculatorPage;
 import util.RandomNumberGenerator;
 
@@ -15,11 +17,14 @@ public class TestsForCountrySelection {
     }
 
     @Test
-    public void User_can_select_a_country_which_applies_VAT_scheme () {
-        for (int i = 0; i < 3; i++) {
-            String countryValue = String.valueOf(RandomNumberGenerator.getRandomNumber(1, 170));
-            calculator.selectCountry(countryValue);
+    public void UserCanSelectACountryWhichAppliesVATScheme (String countryName) {
+            calculator.selectCountry(countryName);
             Assertions.assertTrue(calculator.vatRatesAreAvailable());
-        }
+    }
+
+    @ParameterizedTest
+    @CsvFileSource (resources = "UserCanSelectACountryWhichAppliesVATScheme.csv")
+    public void UserCanSelectACountryWhichAppliesVATSchemeParameterized (String countryName) {
+        UserCanSelectACountryWhichAppliesVATScheme(countryName);
     }
 }

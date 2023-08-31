@@ -1,10 +1,16 @@
+import com.opencsv.exceptions.CsvException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import util.ReadFromFile;
 import pagefactory.CalculatorPage;
 
+import java.io.IOException;
+import java.util.List;
+
+import static util.ReadFromFile.readFromCsv;
 
 
 public class TestsForValueInputs {
@@ -31,18 +37,21 @@ public class TestsForValueInputs {
     }
 
 
-    @Test
-    public void User_can_enter_amounts_with_max_2_decimal_digits_precision() {
-        String valueTypeName = "Price incl. VAT";
-        String inputName = "Price";
+
+    public void User_can_enter_amounts_with_max_2_decimal_digits_precision(String valueTypeName, String inputName) throws IOException, CsvException {
         String value = "19898.1999";
-        //String expected = value.indexOf("./,");
+        ReadFromFile.readFromCsv();
         calculator.setVatValueInput(valueTypeName, inputName, value);
         String actual = calculator.getValueInput(inputName);
-        String expected = value.substring(0, (value.indexOf(".")+3)); //ToDo rewrite it so it handles "," as well
+        String expected = value.substring(0, (value.indexOf(".")+3)); //ToDo rewrite it so it handles "," as well, solve the value problem
 
         //String regex = "^[0-9]*\\.[0-9][0-9]$";
         Assertions.assertEquals(expected, actual);
     }
 
+    @ParameterizedTest
+    @CsvFileSource(resources = "User_can_enter_amounts_with_max_2_decimal_digits_precision.csv")
+    public void User_can_enter_amounts_with_max_2_decimal_digits_precision_parameterized(String valueTypeName, String inputName) throws IOException, CsvException {
+        User_can_enter_amounts_with_max_2_decimal_digits_precision (valueTypeName, inputName);
+    }
 }

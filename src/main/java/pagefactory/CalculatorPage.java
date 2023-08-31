@@ -43,10 +43,10 @@ public class CalculatorPage extends BasePage {
         driver.get("https://www.calkoo.com/en/vat-calculator");
     }
 
-    public void selectCountry(String countryValue) {
+    public void selectCountry(String countryName) {
         wait.until(ExpectedConditions.elementToBeClickable(countryDrp));
         Select country = new Select(countryDrp);
-        country.selectByValue(countryValue);
+        country.selectByVisibleText(countryName);
         /*List<WebElement> allCountry = country.getOptions();
         for (WebElement c : allCountry) {
             System.out.println(c.getText());
