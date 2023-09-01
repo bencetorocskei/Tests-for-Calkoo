@@ -35,7 +35,8 @@ public class CalculatorPage extends BasePage {
     WebElement dialog;
     @FindBy(xpath = "//div[@class = 'fc-dialog-container']//p[@class = 'fc-button-label']")
     WebElement doNotConsentBtn;
-
+    @FindBy(xpath = "//div[@id='chart_div']/div[@id='google-visualization-errors-all-1']/div[@id='google-visualization-errors-0']/span[1]")
+    WebElement errorMsg;
 
     public void openCalculatorPage() {
         driver.get("https://www.calkoo.com/en/vat-calculator");
@@ -98,16 +99,6 @@ public class CalculatorPage extends BasePage {
         List<String> idForRadioBtn = new ArrayList<>();
         rateItems.forEach(rateItem -> idForRadioBtn.add(rateItem.getAttribute("for")));
         System.out.println("idforradioBtn list " + idForRadioBtn);
-        try {
-            if (oneRateOptionIsSelected(idForRadioBtn)) return false;
-        } catch (ElementClickInterceptedException e) {
-            doNotConsentBtn.click();
-            if (oneRateOptionIsSelected(idForRadioBtn)) return false;
-        }
-        return true;
-    }
-
-    private boolean oneRateOptionIsSelected(List<String> idForRadioBtn) {
         for (int i = 0; i < rateItems.size(); i++) {
             System.out.println(rateItems.get(i).isEnabled());
             System.out.println("rateItem " + rateItems.get(i).getText());
@@ -118,13 +109,12 @@ public class CalculatorPage extends BasePage {
             for (String id : idsToCheck) {
                 System.out.println("ids to check " + id);
                 if (driver.findElement(By.cssSelector("#" + id)).isSelected()) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
-
     public boolean selectValidVATRate(String rate) {
         if (rateItems.size() == 0) {
             throw new IllegalArgumentException("there are no rates to select");
@@ -169,6 +159,10 @@ public class CalculatorPage extends BasePage {
         WebElement valueInput = driver.findElement(By.xpath("//input[@id='" + valueInputName + "']"));
         wait.until(ExpectedConditions.elementToBeClickable(valueInput));
         return valueInput.getAttribute("class").contains("disabled");
+    }
+
+    public boolean errorMessageIsDisplayed() {
+        return errorMsg.isDisplayed();
     }
 
 }
