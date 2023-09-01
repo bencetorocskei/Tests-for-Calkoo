@@ -1,7 +1,6 @@
 package pagefactory;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -30,9 +29,8 @@ public class CalculatorPage extends BasePage {
     WebElement vatValueBtn;
     @FindBy(xpath = "//label[normalize-space()='Price without VAT']")
     WebElement netPriceBtn;
-
-    @FindBy(xpath = "//div[@class = 'fc-dialog-container']")
-    WebElement dialog;
+    @FindBy (xpath = "//input [ contains(@id, 'VAT_')]")
+    List <WebElement> vatRadioButtons;
     @FindBy(xpath = "//div[@class = 'fc-dialog-container']//p[@class = 'fc-button-label']")
     WebElement doNotConsentBtn;
     @FindBy(xpath = "//div[@id='chart_div']/div[@id='google-visualization-errors-all-1']/div[@id='google-visualization-errors-0']/span[1]")
@@ -57,35 +55,6 @@ public class CalculatorPage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(rateItems.get(0)));
         return rateItems.size() != 0;
     }
-
-    public boolean vatRatesAreClickable() {
-        if (rateItems.size() == 0) {
-            throw new IllegalArgumentException("there are no rates to select");
-        }
-
-        try {
-            if (vatRatesAreEnable()) return false;
-        } catch (ElementClickInterceptedException e) {
-
-            doNotConsentBtn.click();
-            if (vatRatesAreEnable()) return false;
-        }
-        return true;
-    }
-
-    private boolean vatRatesAreEnable() {
-        wait.until(ExpectedConditions.elementToBeClickable(rateItems.get(0)));
-        for (WebElement item : rateItems) {
-            item.click();
-            String idForRadioBtn = item.getAttribute("for");
-            WebElement relatedRadioBtn = driver.findElement(By.cssSelector("#" + idForRadioBtn));
-            if (!relatedRadioBtn.isSelected()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean onlyOneVatRateIsSelected() {
         if (rateItems.size() == 0) {
             throw new IllegalArgumentException("there are no rates to select");
@@ -164,5 +133,4 @@ public class CalculatorPage extends BasePage {
     public boolean errorMessageIsDisplayed() {
         return errorMsg.isDisplayed();
     }
-
 }

@@ -1,7 +1,4 @@
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import pagefactory.CalculatorPage;
@@ -23,7 +20,6 @@ public class TestsForCountrySelection {
             calculator.selectCountry(countryName);
             Assertions.assertTrue(calculator.vatRatesAreAvailable());
     }
-
     @AfterEach
     public void tearDown() {
         calculator.shutDown();
