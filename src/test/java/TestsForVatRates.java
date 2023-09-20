@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +23,6 @@ public class TestsForVatRates {
     public void UserIsAbleToChooseAValidVATRateForTheSelectedCountry(String countryName, String vatRates) {
         calculator.selectCountry(countryName);
         List<String> rates = List.of(vatRates.split(" "));
-        System.out.println(rates);
         for (String rate : rates) {
             Assertions.assertTrue(calculator.selectValidVATRate(rate.strip()));
         }
@@ -34,4 +34,11 @@ public class TestsForVatRates {
         calculator.selectCountry(countryName);
         Assertions.assertTrue(calculator.onlyOneVatRateIsSelected());
     }
+
+    @AfterEach
+    public void tearDown() {
+        calculator.shutDown();
+    }
 }
+
+

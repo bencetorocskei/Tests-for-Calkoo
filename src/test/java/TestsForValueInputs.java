@@ -62,5 +62,4 @@ public class TestsForValueInputs {
     public void tearDown() {
         calculator.shutDown();
     }
-
 }

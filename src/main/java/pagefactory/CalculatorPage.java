@@ -60,23 +60,14 @@ public class CalculatorPage extends BasePage {
             throw new IllegalArgumentException("there are no rates to select");
         }
         wait.until(ExpectedConditions.elementToBeClickable(rateItems.get(0)));
-
-        //since the radio-buttons can't be reached only the related label is clickable,
-        //but you can't apply the function isSelected() on a label,
-        // I collect the button id's from the labels, and through the ids I can check if it's selected or not.
-
         List<String> idForRadioBtn = new ArrayList<>();
         rateItems.forEach(rateItem -> idForRadioBtn.add(rateItem.getAttribute("for")));
         System.out.println("idforradioBtn list " + idForRadioBtn);
         for (int i = 0; i < rateItems.size(); i++) {
-            System.out.println(rateItems.get(i).isEnabled());
-            System.out.println("rateItem " + rateItems.get(i).getText());
             rateItems.get(i).click();
             String idNotToCheck = rateItems.get(i).getAttribute("for");
-            System.out.println("clicked id " + idNotToCheck);
             List<String> idsToCheck = idForRadioBtn.stream().filter(s -> !s.equals(idNotToCheck)).toList();
             for (String id : idsToCheck) {
-                System.out.println("ids to check " + id);
                 if (driver.findElement(By.cssSelector("#" + id)).isSelected()) {
                     return false;
                 }
